@@ -56,7 +56,7 @@ Jalankan Bot
 npm start
 ```
 **Prasyarat:**  
-- Node.js versi >   
+- Node.js versi > 23 
 - Bot Telegram aktif dan telah menonaktifkan *privacy mode*  
 - Kanal pencatat (log channel)  
 - Konfigurasi token bot, `chat_id`, dan `user_id` di `MaoStg.json`
