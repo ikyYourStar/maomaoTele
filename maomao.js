@@ -40,6 +40,7 @@ bot.on('message', async (msg) => {
   try {
     await command.Maomao({
       bot,
+      config,
       chatId,
       userId,
       username,
