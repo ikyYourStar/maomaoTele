@@ -1,0 +1,1 @@
+MAU RENAME IZIN DULU LAHYA JANGAN ASAL COMOT, "Gw menghargai orang yang sopan, daripada yang cuma bisa ngomong doang."
