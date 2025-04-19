@@ -1,17 +1,17 @@
 {
-  "name": "telegram-bot-example",
+  "name": "maomaoBot-V1",
   "version": "1.0.0",
-  "description": "Bot Telegram dengan Node.js",
-  "main": "index.js",
+  "description": "Bot Maomao versi telegram",
+  "main": "maomao.js",
   "scripts": {
-    "start": "node index.js"
+  "start": "node maomao.js"
   },
   "keywords": [
     "telegram",
     "bot",
     "nodejs"
   ],
-  "author": "Your Name",
+  "author": "iky Avarys",
   "license": "MIT",
   "dependencies": {
     "node-telegram-bot-api": "^0.55.0"
