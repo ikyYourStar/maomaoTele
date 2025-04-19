@@ -18,7 +18,7 @@ Kalok mau rekode atau rename tag me
 */
 
 
-console.log('REYHAN IYHIIIIR🤓');
+console.log('iky Cuk');
 
 
 bot.onText(/\/start/, (msg) => {
@@ -204,26 +204,24 @@ bot.onText(/\/about/, (msg) => {
 
     
     const aboutMessage = `
-𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐁𝐀𝐒𝐄 𝟏.𝟎
+Hello Sir About This Bot
 
-🔷️ Codex = Reyhan6610
+🔷️ Codex = IkyProCodor
 🔷️ VERSI = 1.0
-🔷️ NAME = BASE
-🔷️ LAST UPDATE = JUM, 29 NOV
-@Gray_Hat_anon
-`;
+🔷️ NAME = Maomao Chan
+🔷️ CREATEBOT = JUM, 19 APR`;
 
     
     const options = {
         reply_markup: {
             inline_keyboard: [
-                [{ text: 'Developer', url: 'https://youtube.com/@rendyx_solo-player?si=3-2UDzYjUBJNmENn' }]
+                [{ text: 'Yt Owner', url: 'https://youtube.com/@rivershorts' }]
             ]
         }
     };
 
     
-    bot.sendPhoto(chatId, path.join(__dirname, 'img', 'reyhan6610.png'), {
+    bot.sendPhoto(chatId, path.join(__dirname, 'img', 'maomaoabout.png'), {
         caption: aboutMessage, 
         reply_to_message_id: messageId,
         ...options
