@@ -9,7 +9,7 @@
 **MaomaoChanBot** adalah bot Telegram resmi buatan **Rizky** untuk membantu menjaga grup.  
 Bot ini berbasis JavaScript dan MongoDB, serta code ini no enc 100%.
 
-<p align="center">
+<p align="center"
   <a href="https://t.me/MaomaoChanBot">
     <img src="https://img.shields.io/badge/Maomao Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" />
   </a>
@@ -26,6 +26,7 @@ Bot ini berbasis JavaScript dan MongoDB, serta code ini no enc 100%.
 - Mengirim Pesan Otomatis
 - Perintah dengan awalan `-`
 - Dukungan peran: Superuser, Admin Global, Admin Grup, dan Pengguna
+- Powered By `lowDB`
 
 ---
 ### Hosting Recomended
