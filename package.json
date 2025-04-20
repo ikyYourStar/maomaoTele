@@ -4,7 +4,7 @@
   "description": "Bot Maomao versi telegram",
   "main": "maomao.js",
   "scripts": {
-  "start": "node maomao.js"
+    "start": "node maomao.js"
   },
   "keywords": [
     "telegram",
@@ -14,6 +14,11 @@
   "author": "iky Avarys",
   "license": "MIT",
   "dependencies": {
-    "node-telegram-bot-api": "^0.55.0"
+    "lowdb": "^7.0.1",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
+    "node-telegram-bot-api": "^0.55.0",
+    "sqlite": "^5.1.1",
+    "sqlite-sync": "^0.3.9"
   }
 }
