@@ -7,7 +7,7 @@
 ### <p align="center">Bot resmi untuk menjaga grup kamu
 
 **MaomaoChanBot** adalah bot Telegram resmi buatan **Rizky** untuk membantu menjaga grup.  
-Bot ini berbasis JavaScript dan MongoDB, serta code ini no enc 100%.
+Bot ini berbasis JavaScript, serta code ini no enc 100%.
 
 <p align="center"
   <a href="https://t.me/MaomaoChanBot">
