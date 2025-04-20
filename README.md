@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ikyYourStar/maomaoTele/refs/heads/main/img/main.png" width="300"/>
+  <img src="https://raw.githubusercontent.com/ikyYourStar/maomaoTele/refs/heads/main/maomao-cmd/mao-img/main.png" width="300"/>
 </p>
 
 # <p align="center">MaomaoChanBot
