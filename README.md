@@ -64,6 +64,5 @@ npm start
 - Bot Telegram aktif dan telah menonaktifkan *privacy mode*  
 - Kanal pencatat (log channel)  
 - Konfigurasi token bot, `chat_id`, dan `user_id` di `MaoStg.json`
-- 
-**Copyright**
+### Copyright
 Don't take down my project if you are disturbed, contact my email `fadrygaming3@gmail.com` because my project is officially made by me and I only brought the Maomao character from the anime Kusuriya no Hitorigito and for this bot project I made it 100%
