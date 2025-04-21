@@ -53,8 +53,9 @@ Install Package
 npm Install
 ```
 ### SetUp Bot
-Buka Telegram mu lalu ke botFather lalu buat bot mu setelah itu ambil token mu lalu ke code nya ke bsgian MaoStg.json paste token nya di token: ""
-Jalankan Bot
+Buka Telegram mu lalu ke botFather lalu buat bot mu setelah itu ambil token mu lalu ke code nya ke bsgian MaoStg.json paste token nya di token: "token mu"
+
+### Jalankan Bot
 ```bash
 npm start
 ```
