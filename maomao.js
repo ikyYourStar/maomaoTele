@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
 const path = require('path');
-const { log, logStartMessage } = require('./lib/log/log'); // Import fungsi log
+const { log, logStartMessage } = require('./lib/log/log');
 
 // Load config
 const config = JSON.parse(fs.readFileSync('MaoStg.json', 'utf-8'));
@@ -10,15 +10,14 @@ const prefix = config.prefix;
 
 // Bot start
 const bot = new TelegramBot(token, { polling: true });
-logStartMessage(); // Panggil fungsi untuk menampilkan logo dan info log
+logStartMessage();
 
-// Map untuk menyimpan context reply jinshi
+// Map untuk onReply
 const replyJinshi = new Map();
 
 // Load commands
 const commands = new Map();
 const commandsPath = path.join(__dirname, 'maomao-cmd');
-
 fs.readdirSync(commandsPath).forEach(file => {
   if (file.endsWith('.js')) {
     const command = require(`./maomao-cmd/${file}`);
@@ -26,7 +25,19 @@ fs.readdirSync(commandsPath).forEach(file => {
   }
 });
 
-// Handle message
+// Load onChat (iky)
+const onChat = new Map();
+const chatPath = path.join(__dirname, 'maomao-cmd');
+if (fs.existsSync(chatPath)) {
+  fs.readdirSync(chatPath).forEach(file => {
+    if (file.endsWith('.js')) {
+      const handler = require(`./maomao-cmd/${file}`);
+      onChat.set(file.replace('.js', ''), handler);
+    }
+  });
+}
+
+// Handle pesan masuk
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
@@ -34,29 +45,41 @@ bot.on('message', async (msg) => {
   const name = msg.from.first_name;
   const text = msg.text || '';
 
-  // Cek apakah pesan ini balasan dari reply jinshi
+  // === HANDLE onReply ===
   const replyToMessageId = msg.reply_to_message?.message_id;
   if (replyToMessageId && replyJinshi.has(replyToMessageId)) {
     const data = replyJinshi.get(replyToMessageId);
-    replyJinshi.delete(replyToMessageId); // hapus agar tidak duplikat
+    replyJinshi.delete(replyToMessageId);
     try {
-      await data.execute({
-        bot,
-        config,
-        chatId,
-        userId,
-        username,
-        name,
-        msg,
-        text
-      });
+      await data.execute({ bot, config, chatId, userId, username, name, msg, text });
     } catch (err) {
-      log(`Error di onReply jinshi: ${err}`); // Gunakan fungsi log
+      log(`Error di onReply jinshi: ${err}`);
       bot.sendMessage(chatId, "Terjadi kesalahan saat memproses balasan.");
     }
     return;
   }
 
+  // === HANDLE onChat ===
+  for (const [name, handler] of onChat.entries()) {
+    if (typeof handler.iky === 'function') {
+      try {
+        await handler.iky({
+          bot,
+          config,
+          chatId,
+          userId,
+          username,
+          name,
+          msg,
+          text
+        });
+      } catch (err) {
+        log(`Error di onChat [${name}]: ${err}`);
+      }
+    }
+  }
+
+  // === HANDLE onStart (command) ===
   if (!text.startsWith(prefix)) return;
 
   const args = text.slice(prefix.length).trim().split(/ +/);
@@ -74,10 +97,10 @@ bot.on('message', async (msg) => {
       name,
       args,
       msg,
-      replyJinshi // Berikan akses replyJinshi ke command
+      replyJinshi
     });
   } catch (err) {
-    log(`Terjadi error saat menjalankan perintah ${commandName}: ${err}`); // Gunakan fungsi log
+    log(`Terjadi error saat menjalankan perintah ${commandName}: ${err}`);
     bot.sendMessage(chatId, "Maaf, terjadi kesalahan saat menjalankan perintah.");
   }
 });
