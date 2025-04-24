@@ -3,19 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const { log, logStartMessage } = require('./lib/log/log');
 
-// Load config
 const config = JSON.parse(fs.readFileSync('MaoStg.json', 'utf-8'));
 const token = config.token;
 const prefix = config.prefix;
 
-// Bot start
 const bot = new TelegramBot(token, { polling: true });
 logStartMessage();
 
-// Map untuk onReply
 const replyJinshi = new Map();
 
-// Load commands
 const commands = new Map();
 const commandsPath = path.join(__dirname, 'maomao-cmd');
 fs.readdirSync(commandsPath).forEach(file => {
@@ -25,7 +21,6 @@ fs.readdirSync(commandsPath).forEach(file => {
   }
 });
 
-// Load onChat (iky)
 const onChat = new Map();
 const chatPath = path.join(__dirname, 'maomao-cmd');
 if (fs.existsSync(chatPath)) {
@@ -37,7 +32,6 @@ if (fs.existsSync(chatPath)) {
   });
 }
 
-// Handle pesan masuk
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
@@ -45,7 +39,6 @@ bot.on('message', async (msg) => {
   const name = msg.from.first_name;
   const text = msg.text || '';
 
-  // === HANDLE onReply ===
   const replyToMessageId = msg.reply_to_message?.message_id;
   if (replyToMessageId && replyJinshi.has(replyToMessageId)) {
     const data = replyJinshi.get(replyToMessageId);
@@ -59,27 +52,29 @@ bot.on('message', async (msg) => {
     return;
   }
 
-  // === HANDLE onChat ===
   for (const [name, handler] of onChat.entries()) {
     if (typeof handler.iky === 'function') {
       try {
-        await handler.iky({
-          bot,
-          config,
-          chatId,
-          userId,
-          username,
-          name,
-          msg,
-          text
-        });
+        await handler.iky({ bot, config, chatId, userId, username, name, msg, text });
       } catch (err) {
         log(`Error di onChat [${name}]: ${err}`);
       }
     }
   }
 
-  // === HANDLE onStart (command) ===
+  if (text.trim().toLowerCase() === 'prefix') {
+    return bot.sendMessage(chatId, `Hi Sir my name is maomao🌸\n\n🌷My Prefix: ${prefix}\n🌹Default prefix: ${prefix}`, {
+      reply_to_message_id: msg.message_id
+    });
+  }
+
+  if (text.trim() === prefix) {
+    return bot.sendMessage(chatId, `Ketik *${prefix}menu* untuk melihat daftar perintah bot!`, {
+      reply_to_message_id: msg.message_id,
+      parse_mode: 'Markdown'
+    });
+  }
+
   if (!text.startsWith(prefix)) return;
 
   const args = text.slice(prefix.length).trim().split(/ +/);
