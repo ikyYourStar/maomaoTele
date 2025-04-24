@@ -2,10 +2,32 @@ const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
 const path = require('path');
 const { log, logStartMessage } = require('./lib/log/log');
+const open = require('open');
+const { exec } = require('child_process');
+const os = require('os');
 
 const config = JSON.parse(fs.readFileSync('MaoStg.json', 'utf-8'));
 const token = config.token;
 const prefix = config.prefix;
+
+if (!token || token.trim() === '') {
+  console.log("\n[!] Token bot belum diisi di file MaoStg.json");
+  console.log("[!] Silakan buka BotFather di Telegram untuk mendapatkan token.");
+
+  const platform = os.platform();
+
+  if (platform === 'android') {
+    exec('termux-open-url https://t.me/BotFather', (error) => {
+      if (error) console.log("Gagal membuka browser, buka manual: https://t.me/BotFather");
+    });
+  } else {
+    open('https://t.me/BotFather').catch(() => {
+      console.log("Gagal membuka browser, buka manual: https://t.me/BotFather");
+    });
+  }
+
+  process.exit(1);
+}
 
 const bot = new TelegramBot(token, { polling: true });
 logStartMessage();
