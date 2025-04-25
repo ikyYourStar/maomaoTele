@@ -15,20 +15,30 @@ async function initDB() {
 }
 
 async function getUser(uid) {
-  await db.read();
+  await initDB();
   return db.data.users.find(user => user.uid === uid);
 }
 
 async function getAllUsers() {
-  await db.read();
+  await initDB();
   return db.data.users || [];
 }
 
+async function generateFakeId() {
+  await initDB();
+  const users = db.data.users;
+  const lastFakeId = users.length > 0 ? Math.max(...users.map(u => u.fakeId)) : 0;
+  return lastFakeId + 1;
+}
+
 async function createUser(uid, name) {
-  await db.read();
-  if (!db.data.users.find(user => user.uid === uid)) {
+  await initDB();
+  const exists = db.data.users.find(user => user.uid === uid);
+  if (!exists) {
+    const fakeId = await generateFakeId();
     db.data.users.push({
       uid,
+      fakeId,
       name,
       money: 100,
       role: 'free',
@@ -40,13 +50,26 @@ async function createUser(uid, name) {
   }
 }
 
+async function getFakeId(uid) {
+  await initDB();
+  const user = db.data.users.find(user => user.uid === uid);
+  return user?.fakeId || null;
+}
+
+async function getUserByFakeId(fakeId) {
+  await initDB();
+  const idNum = parseInt(fakeId);
+  return db.data.users.find(user => user.fakeId === idNum);
+}
+
 async function getMoney(uid) {
   const user = await getUser(uid);
   return user?.money || 0;
 }
 
 async function setMoney(uid, money) {
-  const user = await getUser(uid);
+  await initDB();
+  const user = db.data.users.find(user => user.uid === uid);
   if (user) {
     user.money = money;
     await db.write();
@@ -64,7 +87,7 @@ async function isPremium(uid) {
 }
 
 async function setPremium(uid, premiumUntil = undefined) {
-  await db.read();
+  await initDB();
   const user = db.data.users.find(user => user.uid === uid);
   if (user) {
     user.role = 'premium';
@@ -77,21 +100,19 @@ async function setPremium(uid, premiumUntil = undefined) {
 }
 
 async function checkPremiumExpiration() {
-  await db.read();
-  if (db.data && db.data.users) {
-    db.data.users = db.data.users.map(user => {
-      if (user.role === 'premium' && user.premiumUntil !== undefined && user.premiumUntil <= Date.now()) {
-        user.role = 'free';
-        delete user.premiumUntil;
-      }
-      return user;
-    });
-    await db.write();
-  }
+  await initDB();
+  db.data.users = db.data.users.map(user => {
+    if (user.role === 'premium' && user.premiumUntil && user.premiumUntil <= Date.now()) {
+      user.role = 'free';
+      delete user.premiumUntil;
+    }
+    return user;
+  });
+  await db.write();
 }
 
 async function addExp(uid, amount) {
-  await db.read();
+  await initDB();
   const user = db.data.users.find(user => user.uid === uid);
   if (!user) return;
 
@@ -101,7 +122,6 @@ async function addExp(uid, amount) {
     user.exp -= 100;
     user.level = (user.level || 1) + 1;
   }
-
   await db.write();
 }
 
@@ -115,14 +135,13 @@ async function getLevel(uid) {
   return user?.level || 1;
 }
 
-// === Tambahan untuk daily reward ===
 async function getLastClaim(uid) {
   const user = await getUser(uid);
   return user?.lastClaim || 0;
 }
 
 async function setLastClaim(uid, timestamp) {
-  await db.read();
+  await initDB();
   const user = db.data.users.find(user => user.uid === uid);
   if (user) {
     user.lastClaim = timestamp;
@@ -130,12 +149,13 @@ async function setLastClaim(uid, timestamp) {
   }
 }
 
-// EXPORT
 module.exports = {
   initDB,
   getUser,
   getAllUsers,
   createUser,
+  getFakeId,
+  getUserByFakeId,
   getMoney,
   setMoney,
   getRole,

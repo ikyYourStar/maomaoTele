@@ -5,7 +5,7 @@ const userDB = require("../maoDB/maomaoDB");
 module.exports = {
   name: "status",
   author: "Rizky",
-  version: "1.2",
+  version: "1.3",
   role: 0,
   category: "system",
 
@@ -33,6 +33,7 @@ module.exports = {
       return bot.sendMessage(chatId, `Akun kamu berhasil dibuat dengan saldo awal $100`);
     }
 
+    const fakeid = await userDB.getFakeId(userId);
     const saldo = await userDB.getMoney(userId);
     const userRole = await userDB.getRole(userId);
     const level = await userDB.getLevel(userId);
@@ -41,7 +42,7 @@ module.exports = {
     const message = `╭───[ ✨ 𝗜𝗡𝗙𝗢 𝗔𝗞𝗨 ✨ ]───╮
 │ 𝗡𝗮𝗺𝗮 : ${name}
 │ 𝗨𝘀𝗲𝗿 : @${username || 'tidak ada'}
-│ 𝗨𝗜𝗗  : ${userId}
+│ 𝗜𝗗 : ${fakeid}
 │ 𝗥𝗼𝗹𝗲 : ${roleUser}
 │ 𝗧𝘆𝗽𝗲  : ${userRole === 'premium' ? 'Premium' : 'Free'}
 │ 𝗦𝗮𝗹𝗱𝗼 : $${saldo}
@@ -49,11 +50,7 @@ module.exports = {
 │ 𝗪𝗮𝗸𝘁𝘂 : ${waktu}
 ╰──────────────────╯`;
 
-    const imagePath = path.join(__dirname, "./mao-img/maomaoabout.png");
-    if (fs.existsSync(imagePath)) {
-      await bot.sendPhoto(chatId, fs.createReadStream(imagePath), { caption: message });
-    } else {
-      await bot.sendMessage(chatId, message);
-    }
+    const imageUrl = "https://raw.githubusercontent.com/ikyYourStar/maomaoTele/refs/heads/main/maomao-cmd/mao-img/maomaoabout.png";
+    await bot.sendPhoto(chatId, imageUrl, { caption: message });
   }
 };

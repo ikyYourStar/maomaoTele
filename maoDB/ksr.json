@@ -1,0 +1,28 @@
+{
+  "7198001024": [
+    {
+      "nama": "Lishu",
+      "ibb": "https://raw.githubusercontent.com/ikyYourStar/ksr-api/refs/heads/main/ksr-image/B3%20%5B3F33442%5D.png",
+      "bint": "⭐⭐⭐",
+      "id": "102",
+      "rate": "40",
+      "harga": "20"
+    },
+    {
+      "nama": "Gyokuyou",
+      "ibb": "https://raw.githubusercontent.com/ikyYourStar/ksr-api/refs/heads/main/ksr-image/B4%20%5B5142BA5%5D.png",
+      "bint": "⭐⭐⭐⭐",
+      "id": "3",
+      "rate": "10",
+      "harga": "26"
+    },
+    {
+      "nama": "Ah duo",
+      "ibb": "https://raw.githubusercontent.com/ikyYourStar/ksr-api/refs/heads/main/ksr-image/B2%20%5B75446AA%5D.png",
+      "bint": "⭐⭐",
+      "id": "200",
+      "rate": "60",
+      "harga": "14"
+    }
+  ]
+}

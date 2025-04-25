@@ -1,10 +1,11 @@
 const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
 const path = require('path');
-const { log, logStartMessage } = require('./lib/log/log');
+const { log, logStartMessage } = require('./maoLib/log/log');
 const open = require('open');
 const { exec } = require('child_process');
 const os = require('os');
+const cekRole = require('./maoLib/maoRole');
 
 const config = JSON.parse(fs.readFileSync('MaoStg.json', 'utf-8'));
 const token = config.token;
@@ -100,9 +101,16 @@ bot.on('message', async (msg) => {
   if (!text.startsWith(prefix)) return;
 
   const args = text.slice(prefix.length).trim().split(/ +/);
-  const commandName = args.shift().toLowerCase();
-  const command = commands.get(commandName);
-  if (!command) return;
+const commandName = args.shift().toLowerCase();
+const command = commands.get(commandName);
+if (!command) return;
+
+const requiredRole = command.role || 0;
+const role = await cekRole(userId, bot, chatId);
+
+if (role < requiredRole) {
+  return bot.sendMessage(chatId, "Maaf, kamu tidak punya izin untuk menggunakan perintah ini.");
+}
 
   try {
     await command.Maomao({
@@ -114,7 +122,8 @@ bot.on('message', async (msg) => {
       name,
       args,
       msg,
-      replyJinshi
+      replyJinshi,
+      role
     });
   } catch (err) {
     log(`Terjadi error saat menjalankan perintah ${commandName}: ${err}`);

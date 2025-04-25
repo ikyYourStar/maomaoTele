@@ -2,23 +2,14 @@
   "users": [
     {
       "uid": "7198001024",
+      "fakeId": 1,
       "name": "Iky",
-      "money": 7000100,
-      "role": "premium",
-      "exp": 99999,
-      "level": 200,
-      "lastClaim": 1745472017884,
-      "premiumUntil": 1747800544031
-    },
-    {
-      "uid": "8143573749",
-      "name": "tifa",
       "money": 7000100,
       "role": "premium",
       "exp": 0,
       "level": 1,
       "lastClaim": 0,
-      "premiumUntil": 1745411339805
+      "premiumUntil": 1745605058044
     }
   ]
 }

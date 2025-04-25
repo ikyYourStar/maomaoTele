@@ -1,4 +1,0 @@
-[2025-04-21T05:57:57.213Z] █▀▄▀█ ▄▀█ █▀█ █▀▄▀█ ▄▀█ █▀█
-█   █ █▀█ █▄█ █   █ █▀█ █▄█
-[2025-04-21T11:25:32.477Z] Terjadi error saat menjalankan perintah ai: TypeError: reply is not a function
-[2025-04-24T05:04:52.171Z] Terjadi error saat menjalankan perintah prefix: TypeError: Cannot read properties of undefined (reading 'trim')
