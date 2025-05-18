@@ -2,58 +2,211 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Status Bot Maomao</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
   <style>
     body {
       font-family: sans-serif;
-      background: #fdf6ff;
       color: #333;
       text-align: center;
-      padding-top: 50px;
+
+      /* Background Image Styling */
+      background-image: url('https://raw.githubusercontent.com/ikyYourStar/ksr-api/refs/heads/main/ksr-image/25%20Awesome%20Web%20Background%20Animation%20Effects%20%E2%80%93%20Bashooka.jpeg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     .container {
-      background: white;
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 15px;
-      padding: 30px;
-      display: inline-block;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      max-width: 95%;
+      width: 500px;
+      margin: 50px auto 20px auto;
+      display: block;
     }
 
     h1 {
+      margin-top: 0;
       margin-bottom: 20px;
       color: #c56fff;
+      font-size: 28px;
     }
 
+    /* Styling untuk tombol tab */
+    .tabs {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .tab-button {
+        padding: 10px 20px;
+        margin: 0 5px;
+        border: none;
+        background-color: #eee;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .tab-button:hover {
+        background-color: #ddd;
+    }
+
+    .tab-button.active {
+        background-color: #c56fff;
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Styling untuk bagian konten (Uptime dan Info) */
+    .content-section {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    /* Styling untuk uptime */
     #uptime {
       font-size: 24px;
       font-weight: bold;
       color: #333;
+      margin-top: 10px;
     }
+
+    /* Styling untuk konten info */
+    #info-content p {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    #info-content a {
+        color: #c56fff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+        /* Menjadikan link inline-flex agar ikon dan teks sejajar vertikal */
+        display: inline-flex;
+        align-items: center;
+        gap: 5px; /* Jarak antara ikon dan teks */
+    }
+
+    #info-content a:hover {
+        text-decoration: underline;
+        color: #a050d0;
+    }
+
+    /* Styling untuk ikon di dalam link */
+    #info-content a i {
+        font-size: 20px; /* Ukuran ikon */
+    }
+
+
+    /* Media Query untuk responsivitas pada layar kecil (misalnya HP) */
+    @media (max-width: 600px) {
+        .container {
+            padding: 15px;
+            margin-top: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        .tab-button {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        #uptime {
+            font-size: 20px;
+        }
+         #info-content p {
+            font-size: 16px;
+        }
+         #info-content a {
+            font-size: 16px;
+        }
+         #info-content a i {
+            font-size: 18px; /* Kurangi ukuran ikon di HP */
+        }
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Status Maomao Bot</h1>
-    <p>Uptime:</p>
-    <p id="uptime">Loading...</p>
+
+    <div class="tabs">
+      <button class="tab-button active" data-target="uptime-content">Uptime</button>
+      <button class="tab-button" data-target="info-content">Info</button>
+    </div>
+
+    <div id="uptime-content" class="content-section">
+      <p>Uptime:</p>
+      <p id="uptime">Loading...</p>
+    </div>
+
+    <div id="info-content" class="content-section" style="display: none;"> <p>Info:</p>
+      <p>
+        <a href="https://www.facebook.com/ikyStarBoy" target="_blank">
+          <i class="fab fa-facebook"></i> ikyy Athèlstān
+        </a>
+      </p>
+      </div>
+
   </div>
 
   <script>
+    // Fungsi untuk mengambil dan menampilkan uptime
     async function fetchUptime() {
       try {
         const res = await fetch('/uptime');
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
         const data = await res.json();
         const { hours, minutes, seconds } = data;
         document.getElementById('uptime').innerText =
           `${hours} jam, ${minutes} menit, ${seconds} detik`;
       } catch (e) {
+        console.error("Error fetching uptime:", e);
         document.getElementById('uptime').innerText = 'Gagal mengambil uptime';
       }
     }
 
+    // Logika untuk mengganti tab (menampilkan/menyembunyikan konten)
+    const buttons = document.querySelectorAll('.tab-button');
+    const contents = document.querySelectorAll('.content-section');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        contents.forEach(content => content.style.display = 'none');
+
+        const targetId = button.dataset.target;
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+           targetContent.style.display = 'block';
+        }
+      });
+    });
+
+    // Panggil fungsi fetchUptime saat halaman pertama kali dimuat
     fetchUptime();
+
+    // Set interval untuk update uptime setiap 1 detik
     setInterval(fetchUptime, 1000);
+
+    // Picu klik pada tombol 'Uptime' saat halaman dimuat untuk menampilkan konten default
+    document.querySelector('.tab-button.active').click();
+
   </script>
 </body>
 </html>
