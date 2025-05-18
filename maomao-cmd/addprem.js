@@ -4,7 +4,7 @@ module.exports = {
   name: "addprem",
   author: "Rizky",
   version: "1.3", // Naikkan versi lagi
-  role: 1,
+  role: 2,
   category: "owner",
 
   Maomao: async function ({ bot, chatId, msg, args }) {

@@ -9,7 +9,7 @@ function log(message) {
 
   fs.appendFile(logFilePath, logEntry, (err) => {
     if (err) {
-      console.error('Gagal menulis log:', err);
+      console.error('Gagal nulis log:', err);
     }
   });
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Status Bot Maomao</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fdf6ff;
+      color: #333;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #c56fff;
+    }
+
+    #uptime {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Status Maomao Bot</h1>
+    <p>Uptime:</p>
+    <p id="uptime">Loading...</p>
+  </div>
+
+  <script>
+    async function fetchUptime() {
+      try {
+        const res = await fetch('/uptime');
+        const data = await res.json();
+        const { hours, minutes, seconds } = data;
+        document.getElementById('uptime').innerText =
+          `${hours} jam, ${minutes} menit, ${seconds} detik`;
+      } catch (e) {
+        document.getElementById('uptime').innerText = 'Gagal mengambil uptime';
+      }
+    }
+
+    fetchUptime();
+    setInterval(fetchUptime, 1000);
+  </script>
+</body>
+</html>
